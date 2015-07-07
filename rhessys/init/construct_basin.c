@@ -108,6 +108,8 @@ struct basin_object *construct_basin(
 	struct basin_object	*basin;
 	param	*paramPtr=NULL;
 	int	paramCnt=0;
+        struct DS_ID_object * DS;
+	FILE	*DS_IDfid;
 	/*--------------------------------------------------------------*/
 	/*	Allocate a basin object.								*/
 	/*--------------------------------------------------------------*/
@@ -375,6 +377,47 @@ struct basin_object *construct_basin(
 
 	if(paramPtr!=NULL)
 	    free(paramPtr);
+
+
+
+	/*-----------------------------------------------------------------------------
+	 *  read the downslope ID list file
+	 *-----------------------------------------------------------------------------*/
+	printf("Read downstreamID.txt \n");
+
+	DS_IDfid = fopen("/Users/xiaolichen/grassdata/Rattlesnake/out/downstreamID.txt","r");
+	if(DS_IDfid == NULL){
+	  fprintf(stderr, "FATAL ERROR: Cannot open Downslope ID file \n");
+	  exit(EXIT_FAILURE);
+	}
+	
+	int num_DSID = 12527;
+	
+	basin[0].DS = (struct DS_ID_object **)
+		alloc(num_DSID *
+		sizeof(struct DS_ID_object *),"DS_ID_object","construct_basin");
+	printf("Read downstreamID2.txt \n");
+
+        for(i=0;i<num_DSID;i++){
+	  basin[0].DS[i] = (struct DS_ID_object *) alloc(sizeof(struct DS_ID_object),"DS_ID_object","construct_basin");
+	  fscanf(DS_IDfid , "%d", &(basin[0].DS[i]->DSpatch_ID));
+	  /* find the index of this patch in basin */
+	  for(j=0;j<basin->route_list->num_patches;j++){
+	      if(basin[0].DS[i]->DSpatch_ID == basin->route_list->list[j]->ID){
+		basin[0].DS[i]->Order_inpatchlist = j;
+		break;
+	      }
+	      if(j==basin->route_list->num_patches-1){
+		basin[0].DS[i]->Order_inpatchlist = -999;
+	      }
+	  }
+	  printf("%d %d\n",basin[0].DS[i]->DSpatch_ID,basin[0].DS[i]->Order_inpatchlist);
+	  read_record(DS_IDfid, record);
+	}
+
+	if(fclose(DS_IDfid)!=0) exit(EXIT_FAILURE);
+	exit(0);
+
 
 	return(basin);
 } /*end construct_basin.c*/
