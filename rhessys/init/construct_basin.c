@@ -383,7 +383,6 @@ struct basin_object *construct_basin(
 	/*-----------------------------------------------------------------------------
 	 *  read the downslope ID list file
 	 *-----------------------------------------------------------------------------*/
-	printf("Read downstreamID.txt \n");
 
 	DS_IDfid = fopen("/Users/xiaolichen/grassdata/Rattlesnake/out/downstreamID.txt","r");
 	if(DS_IDfid == NULL){
@@ -396,7 +395,6 @@ struct basin_object *construct_basin(
 	basin[0].DS = (struct DS_ID_object **)
 		alloc(num_DSID *
 		sizeof(struct DS_ID_object *),"DS_ID_object","construct_basin");
-	printf("Read downstreamID2.txt \n");
 
         for(i=0;i<num_DSID;i++){
 	  basin[0].DS[i] = (struct DS_ID_object *) alloc(sizeof(struct DS_ID_object),"DS_ID_object","construct_basin");
@@ -411,12 +409,12 @@ struct basin_object *construct_basin(
 		basin[0].DS[i]->Order_inpatchlist = -999;
 	      }
 	  }
-	  printf("%d %d\n",basin[0].DS[i]->DSpatch_ID,basin[0].DS[i]->Order_inpatchlist);
+	  //printf("%d %d\n",basin[0].DS[i]->DSpatch_ID,basin[0].DS[i]->Order_inpatchlist);
 	  read_record(DS_IDfid, record);
 	}
 
 	if(fclose(DS_IDfid)!=0) exit(EXIT_FAILURE);
-	exit(0);
+
 
 
 	return(basin);
