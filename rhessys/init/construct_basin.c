@@ -390,7 +390,7 @@ struct basin_object *construct_basin(
 	  exit(EXIT_FAILURE);
 	}
 	
-	int num_DSID = 12527;
+	int num_DSID = 3402;//11102;//12527;
 	
 	basin[0].DS = (struct DS_ID_object **)
 		alloc(num_DSID *
