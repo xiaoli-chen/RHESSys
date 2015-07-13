@@ -537,7 +537,7 @@ struct basin_object
         double preday_sat_deficit;
         double preday_basin_return_flow;
         double preday_basin_detention_store;
-	 
+	int    DS_num_patches; 
         /*                                              */
         struct	DS_ID_object ** DS;
         struct  base_station_object     **base_stations;

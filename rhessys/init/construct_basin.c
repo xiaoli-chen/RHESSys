@@ -391,12 +391,13 @@ struct basin_object *construct_basin(
 	}
 	
 	int num_DSID = 3402;//11102;//12527;
-	
+	basin[0].DS_num_patches = num_DSID;
+
 	basin[0].DS = (struct DS_ID_object **)
 		alloc(num_DSID *
 		sizeof(struct DS_ID_object *),"DS_ID_object","construct_basin");
 
-        for(i=0;i<num_DSID;i++){
+        for(i=0;i<basin[0].DS_num_patches;i++){
 	  basin[0].DS[i] = (struct DS_ID_object *) alloc(sizeof(struct DS_ID_object),"DS_ID_object","construct_basin");
 	  fscanf(DS_IDfid , "%d", &(basin[0].DS[i]->DSpatch_ID));
 	  /* find the index of this patch in basin */

@@ -242,7 +242,7 @@ void	output_hourly_growth_basin(
 	/*-----------------------------------------------------------------------------
 	 *  collect the nitrate and area for downslope 
 	 *-----------------------------------------------------------------------------*/
-        for(i=0;i<12527;i++){
+        for(i=0;i<basin[0].DS_num_patches;i++){
 	  if(basin[0].DS[i]->Order_inpatchlist == -999)
 	    continue;
 	  else{
