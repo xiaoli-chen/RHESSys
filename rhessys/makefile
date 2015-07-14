@@ -1,4 +1,4 @@
-PGM  = rhessys5.19.nitrate.DS
+PGM  = rhessys5.19.nitrate.DS.new
 VERSION = 5.19
 CC = gcc 
 #CFLAGS = -O -std=c99
