@@ -53,7 +53,7 @@ void	output_hourly_growth_basin(
 	//double alitrc;
 	//double asoilhr;
 	//double acloss;
-	//double asoilc, asminn, anitrate, asurfaceN;
+	double asoilc, asminn, anitrate, asurfaceN;
 	//double alitrn, asoiln, anfix, anuptake;
 	double aarea, hill_area, basin_area;
 	//double acarbon_balance, anitrogen_balance;
@@ -68,6 +68,7 @@ void	output_hourly_growth_basin(
 	double DS_nitrate;
 	double DS_area;
 	double DS_ave_nitrate;
+	double UP_ave_nitrate;
 
 	struct	patch_object  *patch;
 	struct	zone_object	*zone;
@@ -81,7 +82,7 @@ void	output_hourly_growth_basin(
 	j=0;
 	DS_nitrate = 0.0;
 	DS_area = 0.0;
-	
+	UP_ave_nitrate = 0.0;
 	//alai = 0.0; acpool=0.0; anpool = 0.0;
 	//aleafc = 0.0; afrootc=0.0; awoodc=0.0;
 	//aleafn = 0.0; afrootn=0.0; awoodn=0.0;
@@ -90,7 +91,7 @@ void	output_hourly_growth_basin(
 	//asoilhr = 0.0;
 	//alitrc = 0.0;
 	//alitrn = 0.0; asoiln = 0.0;
-	//anitrate = 0.0;
+	anitrate = 0.0;
 	//asurfaceN = 0.0;
 	//asoilc = 0.0; asminn=0.0;
 	//acarbon_balance = 0.0;
@@ -139,9 +140,9 @@ void	output_hourly_growth_basin(
 				asoilc += (patch[0].soil_cs.soil1c + patch[0].soil_cs.soil2c
 					+ patch[0].soil_cs.soil3c + patch[0].soil_cs.soil4c)
 					* patch[0].area;
-				asminn += (patch[0].soil_ns.sminn) * patch[0].area;
+				asminn += (patch[0].soil_ns.sminn) * patch[0].area;*/
 				anitrate += (patch[0].soil_ns.nitrate) * patch[0].area;
-				asurfaceN += (patch[0].surface_DON+patch[0].surface_NO3+patch[0].surface_NH4) * patch[0].area;
+				/*asurfaceN += (patch[0].surface_DON+patch[0].surface_NO3+patch[0].surface_NH4) * patch[0].area;
 				atotaln += (patch[0].totaln) * patch[0].area;
 				*/
 				astreamflow_NH4 += patch[0].streamflow_NH4 * patch[0].area;
@@ -192,7 +193,7 @@ void	output_hourly_growth_basin(
 	//agpsn /= aarea ;
 	//aresp /= aarea ;
 	//alai /= aarea ;
-	//anitrate /= aarea;
+	anitrate /= aarea;
 	//asurfaceN /= aarea;
 	//acpool /= aarea ;
 	//anpool /= aarea ;
@@ -254,8 +255,9 @@ void	output_hourly_growth_basin(
 	}
 	  
 	DS_ave_nitrate = DS_nitrate / DS_area;
+	UP_ave_nitrate = (anitrate * aarea - DS_nitrate)/(aarea-DS_area);
 
-	fprintf(outfile,"%d %d %d %d %d %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf\n",
+	fprintf(outfile,"%d %d %d %d %d %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf\n",
 		current_date.hour,
 		current_date.day,
 		current_date.month,
@@ -298,7 +300,8 @@ void	output_hourly_growth_basin(
 		streamNO3_from_surface * 1000.0,
 		streamNO3_from_sub * 1000.0,
 		DS_ave_nitrate * 1000,
-		DS_area
+		DS_area,
+		UP_ave_nitrate * 1000
 		);
 	/*------------------------------------------*/
 	/*printf("\n Basin %d Output %4d %3d %3d \n",*/ 

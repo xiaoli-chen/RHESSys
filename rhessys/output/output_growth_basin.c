@@ -67,6 +67,7 @@ void	output_growth_basin(
 	double DS_nitrate;
 	double DS_area;
 	double DS_ave_nitrate;
+	double UP_ave_nitrate;
 	
 	struct	patch_object  *patch;
 	struct	zone_object	*zone;
@@ -80,6 +81,7 @@ void	output_growth_basin(
 	j=0;
 	DS_nitrate = 0.0;
 	DS_area = 0.0;
+	UP_ave_nitrate = 0.0;
 	alai = 0.0; acpool=0.0; anpool = 0.0;
 	aleafc = 0.0; afrootc=0.0; awoodc=0.0;
 	aleafn = 0.0; afrootn=0.0; awoodn=0.0;
@@ -311,13 +313,13 @@ void	output_growth_basin(
 	}
 	  
 	DS_ave_nitrate = DS_nitrate / DS_area;
-
+	UP_ave_nitrate = (anitrate * aarea - DS_nitrate) / (aarea - DS_area);
 
 
 	/*-----------------------------------------------------------------------------
 	 *  print out
 	 *-----------------------------------------------------------------------------*/
-	fprintf(outfile,"%d %d %d %d %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
+	fprintf(outfile,"%d %d %d %d %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf \n",
 		current_date.day,
 		current_date.month,
 		current_date.year,
@@ -360,7 +362,8 @@ void	output_growth_basin(
 		streamNO3_from_surface * 1000.0,
 		streamNO3_from_sub * 1000.0,
 		DS_ave_nitrate*1000,
-		DS_area
+		DS_area,
+		UP_ave_nitrate*1000
 		);
 	/*------------------------------------------*/
 	/*printf("\n Basin %d Output %4d %3d %3d \n",*/ 
