@@ -58,7 +58,7 @@
 
 #include "rhessys.h"
 #include "functions.h"
-
+#include "params.h"
 struct basin_object *construct_basin(
 									 struct	command_line_object	*command_line,
 									 FILE	*world_file,
