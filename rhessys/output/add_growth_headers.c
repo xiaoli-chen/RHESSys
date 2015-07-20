@@ -88,7 +88,7 @@ void add_growth_headers(struct world_output_file_object *world_output_files,
 		//"grazingC",
 		"StreamNO3_from_surface",
 		"StreamNO3_from_sub",
-		"DS_ave_nitrate",
+		"DS_ave_nitrate",//20
 		"DS_area",
 		"UP_ave_nitrate");	  
 	/*--------------------------------------------------------------*/
