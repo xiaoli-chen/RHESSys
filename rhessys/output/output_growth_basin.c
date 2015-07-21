@@ -319,7 +319,7 @@ void	output_growth_basin(
 	/*-----------------------------------------------------------------------------
 	 *  print out
 	 *-----------------------------------------------------------------------------*/
-	fprintf(outfile,"%d %d %d %d %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf \n",
+	fprintf(outfile,"%d %d %d %d %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
 		current_date.day,
 		current_date.month,
 		current_date.year,
@@ -363,8 +363,8 @@ void	output_growth_basin(
 		streamNO3_from_sub * 1000.0,
 		DS_ave_nitrate*1000,
 		DS_area,
-		UP_ave_nitrate*1000
-		);
+		UP_ave_nitrate*1000,
+		afrootn);
 	/*------------------------------------------*/
 	/*printf("\n Basin %d Output %4d %3d %3d \n",*/ 
 	/*	basin[0].ID, date.year, date.month, date.day);*/
