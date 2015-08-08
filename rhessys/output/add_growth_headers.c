@@ -46,7 +46,7 @@ void add_growth_headers(struct world_output_file_object *world_output_files,
 	/*	Hourly							*/
 	/*--------------------------------------------------------------*/
 	outfile = world_output_files[0].basin[0].hourly;
-	fprintf(outfile,"%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s\n" ,
+	fprintf(outfile,"%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s\n" ,
 		"hour",
 		"day",
 		"month",
@@ -90,13 +90,15 @@ void add_growth_headers(struct world_output_file_object *world_output_files,
 		"StreamNO3_from_sub",
 		"DS_ave_nitrate",//20
 		"DS_area",
-		"UP_ave_nitrate");	  
+		"UP_ave_nitrate",
+		"DS_sat_deficit",
+		"UP_sat_deficit");	  
 	/*--------------------------------------------------------------*/
 	/*	Daily 							*/
 	/*--------------------------------------------------------------*/
 	outfile = world_output_files[0].basin[0].daily;
 
-	fprintf(outfile,"%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s\n" ,
+	fprintf(outfile,"%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s\n" ,
 		"day",
 		"month",
 		"year",
@@ -141,7 +143,9 @@ void add_growth_headers(struct world_output_file_object *world_output_files,
 		"DS_ave_nitrate",
 		"DS_area",
 		"UP_ave_nitrate",
-		"RootN");
+		"RootN",
+		"DS_sat_deficit",
+		"UP_sat_deficit");
 	/*--------------------------------------------------------------*/
 	/*	Yearly 							*/
 	/*--------------------------------------------------------------*/

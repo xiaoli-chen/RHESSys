@@ -68,6 +68,8 @@ void	output_growth_basin(
 	double DS_area;
 	double DS_ave_nitrate;
 	double UP_ave_nitrate;
+	double asat_deficit_DS;
+	double asat_deficit_UP;
 	
 	struct	patch_object  *patch;
 	struct	zone_object	*zone;
@@ -82,6 +84,8 @@ void	output_growth_basin(
 	DS_nitrate = 0.0;
 	DS_area = 0.0;
 	UP_ave_nitrate = 0.0;
+	asat_deficit_DS = 0.0;
+	asat_deficit_UP = 0.0;
 	alai = 0.0; acpool=0.0; anpool = 0.0;
 	aleafc = 0.0; afrootc=0.0; awoodc=0.0;
 	aleafn = 0.0; afrootn=0.0; awoodn=0.0;
@@ -302,24 +306,28 @@ void	output_growth_basin(
 	 *  collect the nitrate and area for downslope 
 	 *-----------------------------------------------------------------------------*/
         for(i=0;i<basin[0].DS_num_patches;i++){
-	  if(basin[0].DS[i]->Order_inpatchlist == -999)
-	    continue;
-	  else{
 	    j = basin[0].DS[i]->Order_inpatchlist;
 	    patch = basin[0].route_list->list[j];
+	    
+	  if(basin[0].DS[i]->Order_inpatchlist == -999)
+	    asat_deficit_UP += patch[0].sat_deficit * patch[0].area;
+      	  else{
 	    DS_nitrate += patch[0].soil_ns.nitrate * patch[0].area;
 	    DS_area +=patch[0].area;
+	    asat_deficit_DS += patch[0].sat_deficit * patch[0].area;
+
 	  }
 	}
 	  
 	DS_ave_nitrate = DS_nitrate / DS_area;
 	UP_ave_nitrate = (anitrate * aarea - DS_nitrate) / (aarea - DS_area);
-
+	asat_deficit_DS /=DS_area;
+	asat_deficit_UP /=(aarea - DS_area);
 
 	/*-----------------------------------------------------------------------------
 	 *  print out
 	 *-----------------------------------------------------------------------------*/
-	fprintf(outfile,"%d %d %d %d %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
+	fprintf(outfile,"%d %d %d %d %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
 		current_date.day,
 		current_date.month,
 		current_date.year,
@@ -361,10 +369,12 @@ void	output_growth_basin(
 		acloss * 1000.0,
 		streamNO3_from_surface * 1000.0,
 		streamNO3_from_sub * 1000.0,
-		DS_ave_nitrate*1000,
+		DS_ave_nitrate*1000.0,
 		DS_area,
-		UP_ave_nitrate*1000,
-		afrootn);
+		UP_ave_nitrate*1000.0,
+		afrootn,
+		asat_deficit_DS * 1000.0,
+		asat_deficit_UP * 1000.0);
 	/*------------------------------------------*/
 	/*printf("\n Basin %d Output %4d %3d %3d \n",*/ 
 	/*	basin[0].ID, date.year, date.month, date.day);*/
