@@ -397,19 +397,18 @@ struct basin_object *construct_basin(
 	  basin[0].DS[i] = (struct DS_ID_object *) alloc(sizeof(struct DS_ID_object),"DS_ID_object","construct_basin");
 	  fscanf(DS_IDfid , "%d", &(basin[0].DS[i]->DSpatch_ID));
 	  /* find the index of this patch in basin */
+	  basin[0].DS[i]->Order_inpatchlist = -999;
 	  for(j=0;j<basin->route_list->num_patches;j++){
 	      if(basin[0].DS[i]->DSpatch_ID == basin->route_list->list[j]->ID){
 		basin[0].DS[i]->Order_inpatchlist = j;
 		break;
 	      }
-	      if(j==basin->route_list->num_patches-1){
-		basin[0].DS[i]->Order_inpatchlist = -999;
-	      }
 	  }
 	  //printf("%d %d\n",basin[0].DS[i]->DSpatch_ID,basin[0].DS[i]->Order_inpatchlist);
 	  read_record(DS_IDfid, record);
+	  //printf("patch_ID = %d, Order_inpatchlist=%d\n",basin[0].DS[i]->DSpatch_ID,basin[0].DS[i]->Order_inpatchlist);
 	}
-
+        printf("num of DS patch = %d\n",num_DSID);
 	if(fclose(DS_IDfid)!=0) exit(EXIT_FAILURE);
 
 

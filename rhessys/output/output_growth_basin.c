@@ -70,6 +70,7 @@ void	output_growth_basin(
 	double UP_ave_nitrate;
 	double asat_deficit_DS;
 	double asat_deficit_UP;
+	double asat_deficit;
 	
 	struct	patch_object  *patch;
 	struct	zone_object	*zone;
@@ -86,6 +87,7 @@ void	output_growth_basin(
 	UP_ave_nitrate = 0.0;
 	asat_deficit_DS = 0.0;
 	asat_deficit_UP = 0.0;
+	asat_deficit = 0.0;
 	alai = 0.0; acpool=0.0; anpool = 0.0;
 	aleafc = 0.0; afrootc=0.0; awoodc=0.0;
 	aleafn = 0.0; afrootn=0.0; awoodn=0.0;
@@ -161,7 +163,8 @@ void	output_growth_basin(
 				aDOC += (patch[0].soil_cs.DOC) * patch[0].area;
 				anfix += (patch[0].ndf.nfix_to_sminn) * patch[0].area;
 				acloss += (patch[0].grazing_Closs) * patch[0].area;
-				anuptake += (patch[0].ndf.sminn_to_npool) * patch[0].area,
+				anuptake += (patch[0].ndf.sminn_to_npool) * patch[0].area;
+				asat_deficit += (patch[0].sat_deficit) * patch[0].area;
 
 				asoilhr += (
 					patch[0].cdf.litr1c_hr + 
@@ -300,6 +303,7 @@ void	output_growth_basin(
 	hgwNO3out = hgwNO3out / basin_area;
 	hgwDONout = hgwDONout / basin_area;
 	hgwDOCout = hgwDOCout / basin_area;
+	asat_deficit /=aarea;
 
 
 	/*-----------------------------------------------------------------------------
@@ -310,8 +314,8 @@ void	output_growth_basin(
 	    patch = basin[0].route_list->list[j];
 	    
 	  if(basin[0].DS[i]->Order_inpatchlist == -999)
-	    asat_deficit_UP += patch[0].sat_deficit * patch[0].area;
-      	  else{
+	    continue;
+	    else{
 	    DS_nitrate += patch[0].soil_ns.nitrate * patch[0].area;
 	    DS_area +=patch[0].area;
 	    asat_deficit_DS += patch[0].sat_deficit * patch[0].area;
@@ -322,7 +326,8 @@ void	output_growth_basin(
 	DS_ave_nitrate = DS_nitrate / DS_area;
 	UP_ave_nitrate = (anitrate * aarea - DS_nitrate) / (aarea - DS_area);
 	asat_deficit_DS /=DS_area;
-	asat_deficit_UP /=(aarea - DS_area);
+	asat_deficit_UP = (asat_deficit*aarea -asat_deficit_DS*DS_area)/(aarea - DS_area);
+
 
 	/*-----------------------------------------------------------------------------
 	 *  print out

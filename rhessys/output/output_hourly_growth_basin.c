@@ -71,6 +71,7 @@ void	output_hourly_growth_basin(
 	double UP_ave_nitrate;
       	double asat_deficit_DS;
 	double asat_deficit_UP;
+	double asat_deficit;
 
 
 	struct	patch_object  *patch;
@@ -88,6 +89,7 @@ void	output_hourly_growth_basin(
 	UP_ave_nitrate = 0.0;
 	asat_deficit_DS = 0.0;
 	asat_deficit_UP = 0.0;
+	asat_deficit = 0.0;
 	//alai = 0.0; acpool=0.0; anpool = 0.0;
 	//aleafc = 0.0; afrootc=0.0; awoodc=0.0;
 	//aleafn = 0.0; afrootn=0.0; awoodn=0.0;
@@ -147,6 +149,7 @@ void	output_hourly_growth_basin(
 					* patch[0].area;
 				asminn += (patch[0].soil_ns.sminn) * patch[0].area;*/
 				anitrate += (patch[0].soil_ns.nitrate) * patch[0].area;
+				asat_deficit += patch[0].sat_deficit * patch[0].area;
 				/*asurfaceN += (patch[0].surface_DON+patch[0].surface_NO3+patch[0].surface_NH4) * patch[0].area;
 				atotaln += (patch[0].totaln) * patch[0].area;
 				*/
@@ -199,6 +202,7 @@ void	output_hourly_growth_basin(
 	//aresp /= aarea ;
 	//alai /= aarea ;
 	anitrate /= aarea;
+	asat_deficit /=aarea;
 	//asurfaceN /= aarea;
 	//acpool /= aarea ;
 	//anpool /= aarea ;
@@ -253,7 +257,8 @@ void	output_hourly_growth_basin(
 	    patch = basin[0].route_list->list[j];
 
 	  if(basin[0].DS[i]->Order_inpatchlist == -999)
-	    asat_deficit_UP += patch[0].sat_deficit * patch[0].area;
+	    //asat_deficit_UP += patch[0].sat_deficit * patch[0].area;
+	    continue;
 	  else{
 	    DS_nitrate += patch[0].soil_ns.nitrate * patch[0].area;
 	    DS_area +=patch[0].area;
@@ -265,7 +270,7 @@ void	output_hourly_growth_basin(
 	DS_ave_nitrate = DS_nitrate / DS_area;
 	UP_ave_nitrate = (anitrate * aarea - DS_nitrate)/(aarea-DS_area);
 	asat_deficit_DS /=DS_area;
-	asat_deficit_UP /=(aarea - DS_area);
+	asat_deficit_UP = (asat_deficit*aarea -asat_deficit_DS*DS_area)/(aarea - DS_area);
 
 	fprintf(outfile,"%d %d %d %d %d %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf %11.9lf\n",
 		current_date.hour,
