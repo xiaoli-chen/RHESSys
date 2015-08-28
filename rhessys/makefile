@@ -127,7 +127,6 @@ $(OBJ)/construct_world.o \
 $(OBJ)/construct_yearly_clim.o \
 $(OBJ)/construct_zone.o \
 $(OBJ)/construct_zone_defaults.o \
-$(OBJ)/construct_topmodel_patchlist.o \
 $(OBJ)/destroy_base_station.o \
 $(OBJ)/destroy_basin.o \
 $(OBJ)/destroy_basin_defaults.o \
@@ -301,21 +300,11 @@ dir:
 	mkdir -p $(OBJ)
 
 ifdef netcdf
-ifdef wmfire
-rhessys: $(OBJECTS)
-	$(CC) $(OBJECTS) $(CFLAGS) -I include -lm -lnetcdf -L./lib -lwmfire -v -o $(PGM) 
-else
 rhessys: $(OBJECTS)
 	$(CC) $(OBJECTS) $(CFLAGS) -I include -lm -lnetcdf -v -o $(PGM) 
-endif
-else
-ifdef wmfire
-rhessys: $(OBJECTS)
-	$(CC) $(OBJECTS) $(CFLAGS) -I include -lm -L./lib -lwmfire -v -o $(PGM) 
 else
 rhessys: $(OBJECTS)
-	$(CC) $(OBJECTS) $(CFLAGS) -I include -lm -L./lib -v -o $(PGM) 
-endif
+	$(CC) $(OBJECTS) $(CFLAGS) -I include -lm -v -o $(PGM) 
 endif
 
 $(OBJ)/alloc.o: util/alloc.c
@@ -360,13 +349,8 @@ $(OBJ)/execute_hourly_growth_output_event.o: tec/execute_hourly_growth_output_ev
 	$(CC) -c $(CFLAGS) -I include tec/execute_hourly_growth_output_event.c -o $(OBJ)/execute_hourly_growth_output_event.o
 $(OBJ)/execute_state_output_event.o: tec/execute_state_output_event.c
 	$(CC) -c $(CFLAGS) -I include tec/execute_state_output_event.c -o $(OBJ)/execute_state_output_event.o
-ifdef wmfire
 $(OBJ)/execute_firespread_event.o: tec/execute_firespread_event.c
 	$(CC) -c $(CFLAGS) -I include tec/execute_firespread_event.c -o $(OBJ)/execute_firespread_event.o
-else
-$(OBJ)/execute_firespread_event.o: tec/execute_firespread_event_dummy.c
-	$(CC) -c $(CFLAGS) -I include tec/execute_firespread_event_dummy.c -o $(OBJ)/execute_firespread_event.o
-endif
 $(OBJ)/execute_tec.o: tec/execute_tec.c
 	$(CC) -c $(CFLAGS) -I include tec/execute_tec.c -o $(OBJ)/execute_tec.o
 $(OBJ)/construct_command_line.o: init/construct_command_line.c
@@ -559,8 +543,6 @@ $(OBJ)/construct_stream_routing_topology.o: init/construct_stream_routing_topolo
 	$(CC) -c $(CFLAGS) -I include init/construct_stream_routing_topology.c -o $(OBJ)/construct_stream_routing_topology.o
 $(OBJ)/construct_routing_topology.o: init/construct_routing_topology.c
 	$(CC) -c $(CFLAGS) -I include init/construct_routing_topology.c -o $(OBJ)/construct_routing_topology.o
-$(OBJ)/construct_topmodel_patchlist.o: init/construct_topmodel_patchlist.c
-	$(CC) -c $(CFLAGS) -I include init/construct_topmodel_patchlist.c -o $(OBJ)/construct_topmodel_patchlist.o
 $(OBJ)/construct_fire_grid.o: init/construct_fire_grid.c
 	$(CC) -c $(CFLAGS) -I include init/construct_fire_grid.c -o $(OBJ)/construct_fire_grid.o
 $(OBJ)/construct_hillslope.o: init/construct_hillslope.c

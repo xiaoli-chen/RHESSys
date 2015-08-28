@@ -71,6 +71,7 @@ struct basin_object *construct_basin(
 	/*--------------------------------------------------------------*/
 	/*	Local function definition.									*/
 	/*--------------------------------------------------------------*/
+	param *readtag_worldfile(int *, FILE *,char *);
 	struct base_station_object *assign_base_station(
 								int,
 								int,
@@ -89,14 +90,6 @@ struct basin_object *construct_basin(
 	
 	void	sort_by_elevation( struct basin_object *);
 	
-//	struct routing_list_object construct_ddn_routing_topology(
-//		char *,
-//		struct basin_object *);
-
-//	struct routing_list_object construct_routing_topology(
-//		char *,
-//		struct basin_object *,
-//		struct	command_line_object *);
 	
 	struct stream_list_object construct_stream_routing_topology(
 		char *,
@@ -117,7 +110,6 @@ struct basin_object *construct_basin(
 	int	paramCnt=0;
         struct DS_ID_object * DS;
 	FILE	*DS_IDfid;
-	
 	/*--------------------------------------------------------------*/
 	/*	Allocate a basin object.								*/
 	/*--------------------------------------------------------------*/
@@ -127,7 +119,7 @@ struct basin_object *construct_basin(
 	/*--------------------------------------------------------------*/
 	/*	Read in the basinID.									*/
 	/*--------------------------------------------------------------*/
-	fscanf(world_file,"%d",&(basin[0].ID));
+	/*  fscanf(world_file,"%d",&(basin[0].ID));
 	read_record(world_file, record);
 	fscanf(world_file,"%lf",&(basin[0].x));
 	read_record(world_file, record);
@@ -140,7 +132,19 @@ struct basin_object *construct_basin(
 	fscanf(world_file,"%lf",&(basin[0].latitude));
 	read_record(world_file, record);
 	fscanf(world_file,"%d",&(basin[0].num_base_stations));
-	read_record(world_file, record);
+	read_record(world_file, record);*/
+
+	paramPtr=readtag_worldfile(&paramCnt,world_file,"Basin");
+	/*for (i=0;i<paramCnt;i++){
+	  printf("value=%s,name =%s\n",paramPtr[i].strVal,paramPtr[i].name);
+	}*/
+	basin[0].ID = getIntWorldfile(&paramCnt,&paramPtr,"basin_ID","%d",-9999,0);
+	basin[0].x = getDoubleWorldfile(&paramCnt,&paramPtr,"x","%lf",0.0,1);
+	basin[0].y = getDoubleWorldfile(&paramCnt,&paramPtr,"y","%lf",0.0,1);
+	basin[0].z = getDoubleWorldfile(&paramCnt,&paramPtr,"z","%lf",-9999,0);
+	default_object_ID = getIntWorldfile(&paramCnt,&paramPtr,"basin_parm_ID","%d",-9999,0);	
+	basin[0].latitude = getDoubleWorldfile(&paramCnt,&paramPtr,"latitude","%lf",-9999,0);
+	basin[0].num_base_stations = getIntWorldfile(&paramCnt,&paramPtr,"n_basestations","%d",0,0);
 	
 	/*--------------------------------------------------------------*/
 	/*	Create cosine of latitude to save future computations.		*/
@@ -245,6 +249,10 @@ struct basin_object *construct_basin(
 			}	
 		}
 	};
+	
+	//printf("numof zone=%d\n",basin[0].hillslopes[0][0].num_zones);
+	
+	//exit(0);
 	
 	basin[0].defaults[0][0].n_routing_timesteps = 
 			(int) (n_routing_timesteps / basin[0].area);
@@ -353,10 +361,6 @@ struct basin_object *construct_basin(
 								command_line, true);
 			}
 		}
-	} else { // command_line[0].routing_flag != 1
-		// For TOPMODEL mode, make a dummy route list consisting of all patches
-		// in the basin, in no particular order.
-		basin->route_list = construct_topmodel_patchlist(basin);
 	}
 	
 	/*--------------------------------------------------------------*/
