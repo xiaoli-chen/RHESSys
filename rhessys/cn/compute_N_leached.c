@@ -84,7 +84,10 @@ double	compute_N_leached(int verbose_flag,
 	double Q, Qtotal;
 	double z1, z2;
 	double	available_water,septic_depth;
-
+	double Qout_z1,Qout_navail,Qout_nleached;
+	
+	Qout_navail = 0.0;
+	Qout_nleached = 0.0;
 	nleached = 0.0;
 	Qtotal = 0.0;
 	nabsorbed=0.0;
@@ -104,7 +107,8 @@ double	compute_N_leached(int verbose_flag,
 	/*------------------------------------------------------*/
 	if ((s1 == 0.0) && (s2 == 0.0)) {
 		
-		z2 = -1.0 * p * log (1 - (Qout) / (p * n_0));
+		//z2 = -1.0 * p * log (1 - (Qout) / (p * n_0));
+		z2=z2_N;
 		z1 = 0.0;
 		if (N_decay_rate > ZERO) {	
 			navail = total_nitrate
