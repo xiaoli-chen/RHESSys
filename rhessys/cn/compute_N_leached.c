@@ -111,14 +111,17 @@ double	compute_N_leached(int verbose_flag,
 		z2=z2_N;
 		z1 = 0.0;
 		if (N_decay_rate > ZERO) {	
-			navail = total_nitrate
-				/ (1.0 - exp(-1.0 * N_decay_rate * z2_N) )
-				* (exp(-1.0 * N_decay_rate * z1)
-				- exp(-1.0 * N_decay_rate * (z2)));
+			navail = total_nitrate / (1.0 - exp(-1.0 * N_decay_rate * z2) ) / 
+				( 1 - exp(-1.0 * 1/m * z2)) / (N_decay_rate + 1/m) *
+				 (z2 - z1) * (N_decay_rate/m) *
+				 (exp(-1.0 * (N_decay_rate +1/m) * z1)
+				- exp(-1.0 * (N_decay_rate +1/m) * z2));
 		}
 		else {
 			navail = total_nitrate * (z2-z1)/z2_N;
 		}
+
+		if (navail > total_nitrate) navail = total_nitrate;
 
 		available_water = compute_delta_water(
 			verbose_flag,
@@ -165,11 +168,11 @@ double	compute_N_leached(int verbose_flag,
 			0.0,
 			-s1);
 	if (N_decay_rate > 0.0) {	
-		navail = total_nitrate
-			/ (1.0 - exp(-1.0 * N_decay_rate * z2_N) )
-			* (exp(-1.0 * N_decay_rate * z1)
-			- exp(-1.0 * N_decay_rate * (z2)));
-
+			navail = total_nitrate / (1.0 - exp(-1.0 * N_decay_rate * z2) ) / 
+				( exp(-1.0 * 1/m * z1) - exp(-1.0 * 1/m * z2)) / (N_decay_rate + 1/m) *
+				 (z2 - z1) * (N_decay_rate/m) *
+				 (exp(-1.0 * (N_decay_rate +1/m) * z1)
+				- exp(-1.0 * (N_decay_rate +1/m) * z2));
 		}
 
 	else {
@@ -178,7 +181,10 @@ double	compute_N_leached(int verbose_flag,
 				navail = 0.0;
 			else
 				navail = total_nitrate * (z2-z1)/(z2_N -  septic_depth);
-		}
+	}
+
+
+	if (navail > total_nitrate) navail = total_nitrate;
 	
 				
 	/*------------------------------------------------------*/
