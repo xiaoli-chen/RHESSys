@@ -119,6 +119,15 @@ double	compute_N_leached(int verbose_flag,
 		else {
 			navail = total_nitrate * (z2-z1)/z2_N;
 		}
+
+		available_water = compute_delta_water(
+			verbose_flag,
+			n_0,
+			p,
+			z2_water,
+			z2,
+			z1);	
+
 		nabsorbed=compute_N_absorbed(verbose_flag,
 						z1,
 						z2,
@@ -194,13 +203,15 @@ double	compute_N_leached(int verbose_flag,
 		if (nabsorbed > navail) {
 				navail=0;
 		}
-		else navail = navail-nabsorbed;
-		
-		if (available_water > ZERO) {
-			nleached = navail * Qout/available_water;
-		}
-		else nleached = 0.0;
-	    }
+		else navail = navail-nabsorbed;	
+
+	  }
+
+	  if (available_water > ZERO) {
+		  nleached = navail * Qout/available_water;
+	  }
+	  else nleached = 0.0;
+	
 	}
 	if (nleached > navail) nleached=navail;
 	/*------------------------------------------------------*/
