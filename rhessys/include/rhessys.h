@@ -540,8 +540,9 @@ struct basin_object
         double preday_sat_deficit;
         double preday_basin_return_flow;
         double preday_basin_detention_store;
+	int    DS_num_patches; 
         /*                                              */
-        
+        struct	DS_ID_object ** DS;
         struct  base_station_object     **base_stations;
         struct  basin_default           **defaults;
         struct  basin_hourly_object     *hourly;
@@ -555,6 +556,16 @@ struct basin_object
         struct  accumulate_patch_object acc_year;
         struct  snowpack_object snowpack;
         };
+
+/*-----------------------------------------------------------------------------
+ *  define the Downslope ID object structure
+ *-----------------------------------------------------------------------------*/
+struct DS_ID_object {
+        int	DSpatch_ID;
+	int	Order_inpatchlist;
+
+	};
+
 
 /*----------------------------------------------------------*/
 /*      Define the basin hourly parameter structure.                    */
