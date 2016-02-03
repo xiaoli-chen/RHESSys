@@ -1,4 +1,4 @@
-PGM  = rhessys5.20.nitrate	
+PGM  = rhessys5.20.nitrate.WS	
 VERSION = 5.20.nitrate
 CC = gcc 
 #CFLAGS = -O -std=c99
