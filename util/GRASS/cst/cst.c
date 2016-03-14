@@ -839,6 +839,7 @@ int checkStreamIntxns(streamEntry *currentStreamPtr, int streamId, int nRow, int
             return 0;
         }
 
+	if(currentStreamPtr->)
         if ((currentStreamPtr->minElevation - streamMidPoint) > elevationDiffThreshold) {
             /* Connect the adjacent stream reach to the current stream reach */
             addStreamIntxn(currentStreamPtr, adjacentStreamPtr, nRow, nCol, index);
