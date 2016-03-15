@@ -782,7 +782,7 @@ int checkStreamIntxns(streamEntry *currentStreamPtr, int streamId, int nRow, int
     int adjacentStreamId;
     int downstreamReachCount = 1;
     int maxDownstreamReachCount = 10;
-    double elevationDiffThreshold = 10;
+    double elevationDiffThreshold = 0.00000;
     double streamMidPoint;
     streamEntry *adjacentStreamPtr = NULL;
     streamEntry *currentDownstreamPtr = NULL;
@@ -839,13 +839,14 @@ int checkStreamIntxns(streamEntry *currentStreamPtr, int streamId, int nRow, int
             return 0;
         }
 
-	if(currentStreamPtr->)
-        if ((currentStreamPtr->minElevation - streamMidPoint) > elevationDiffThreshold) {
+	
+        if ((currentStreamPtr->minElevation - streamMidPoint) >= elevationDiffThreshold) {
             /* Connect the adjacent stream reach to the current stream reach */
             addStreamIntxn(currentStreamPtr, adjacentStreamPtr, nRow, nCol, index);
             currentStreamPtr->downstreamReachMinElevation = currentDownstreamPtr->minElevation;
             return 1;
         }
+
 
         /* Haven't found a downstream reach that is low enough yet, so try the next down stream reach from the current downstream reach. */
         if (currentDownstreamPtr->downstreamReach.streamId != -1)
