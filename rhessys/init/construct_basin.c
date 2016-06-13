@@ -376,7 +376,7 @@ struct basin_object *construct_basin(
 	 /*-----------------------------------------------------------------------------
 	 *  read the downslope ID list file
 	 *-----------------------------------------------------------------------------*/
-
+        /*  
 	DS_IDfid = fopen("../out/downstreamID_buffer20.txt","r");
 	if(DS_IDfid == NULL){
 	  fprintf(stderr, "FATAL ERROR: Cannot open Downslope ID file \n");
@@ -395,7 +395,6 @@ struct basin_object *construct_basin(
 	  fscanf(DS_IDfid , "%d", &(basin[0].DS[i]->DSpatch_ID));
 	
 
-	  /* find the index of this patch in basin */
 	
 	  
 	  basin[0].DS[i]->Order_inpatchlist = -999;
@@ -415,6 +414,8 @@ struct basin_object *construct_basin(
 	}
         printf("num of DS patch = %d\n",num_DSID);
 	if(fclose(DS_IDfid)!=0) exit(EXIT_FAILURE);
+
+	*/
 		
 	return(basin);
 } /*end construct_basin.c*/

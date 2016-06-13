@@ -64,12 +64,6 @@ void	output_growth_basin(
 	double streamNO3_from_sub;
 	double hgwNO3, hgwDON, hgwDOC, hgwNH4;
 	double hgwNO3out, hgwDONout, hgwDOCout, hgwNH4out;
-	double DS_nitrate;
-	double DS_area;
-	double DS_ave_nitrate;
-	double UP_ave_nitrate;
-	double asat_deficit_DS;
-	double asat_deficit_UP;
 	double asat_deficit;
 	
 	struct	patch_object  *patch;
@@ -82,11 +76,6 @@ void	output_growth_basin(
 	/*--------------------------------------------------------------*/
 	i=0;
 	j=0;
-	DS_nitrate = 0.0;
-	DS_area = 0.0;
-	UP_ave_nitrate = 0.0;
-	asat_deficit_DS = 0.0;
-	asat_deficit_UP = 0.0;
 	asat_deficit = 0.0;
 	alai = 0.0; acpool=0.0; anpool = 0.0;
 	aleafc = 0.0; afrootc=0.0; awoodc=0.0;
@@ -137,13 +126,13 @@ void	output_growth_basin(
 					+ patch[0].litter_ns.litr3n + patch[0].litter_ns.litr4n)
 					* patch[0].area;
 				asoiln += (patch[0].soil_ns.soil1n + patch[0].soil_ns.soil2n
-					+ patch[0].soil_ns.soil3n + patch[0].soil_ns.soil4n)
+					+ patch[0].soil_ns.soil3n) // + patch[0].soil_ns.soil4n)
 					* patch[0].area;
 				alitrc += (patch[0].litter_cs.litr1c + patch[0].litter_cs.litr2c
 					+ patch[0].litter_cs.litr3c + patch[0].litter_cs.litr4c)
 					* patch[0].area;
 				asoilc += (patch[0].soil_cs.soil1c + patch[0].soil_cs.soil2c
-					+ patch[0].soil_cs.soil3c + patch[0].soil_cs.soil4c)
+					+ patch[0].soil_cs.soil3c) // + patch[0].soil_cs.soil4c)
 					* patch[0].area;
 				asminn += (patch[0].soil_ns.sminn) * patch[0].area;
 				anitrate += (patch[0].soil_ns.nitrate) * patch[0].area;
@@ -306,36 +295,12 @@ void	output_growth_basin(
 	asat_deficit /=aarea;
 
 
-	/*-----------------------------------------------------------------------------
-	 *  collect the nitrate and area for downslope 
-	 *-----------------------------------------------------------------------------*/
-          
-	for(i=0;i<basin[0].DS_num_patches;i++){
-	    j = basin[0].DS[i]->Order_inpatchlist;
-	    patch = basin[0].route_list->list[j];
-	    
-	  if(basin[0].DS[i]->Order_inpatchlist == -999){
-	    printf("can't find this patch in the patch list");
-	    continue;}
-	  else{
-	    DS_nitrate += patch[0].soil_ns.nitrate * patch[0].area;
-	    DS_area +=patch[0].area;
-	    asat_deficit_DS += patch[0].sat_deficit * patch[0].area;
-
-	  }
-	}
-	  
-	DS_ave_nitrate = DS_nitrate / DS_area;
-	UP_ave_nitrate = (anitrate * aarea - DS_nitrate) / (aarea - DS_area);
-	asat_deficit_DS /=DS_area;
-	asat_deficit_UP = (asat_deficit*aarea -asat_deficit_DS*DS_area)/(aarea - DS_area);
-	
 
 
 	/*-----------------------------------------------------------------------------
 	 *  print out
 	 *-----------------------------------------------------------------------------*/
-	fprintf(outfile,"%d %d %d %d %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
+	fprintf(outfile,"%d %d %d %d %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %11.9lf %11.9lf %11.9lf %11.9lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
 		current_date.day,
 		current_date.month,
 		current_date.year,
@@ -377,12 +342,8 @@ void	output_growth_basin(
 		acloss * 1000.0,
 		streamNO3_from_surface * 1000.0,
 		streamNO3_from_sub * 1000.0,
-		DS_ave_nitrate*1000.0,
-		DS_area,
-		UP_ave_nitrate*1000.0,
-		afrootn,
-		asat_deficit_DS * 1000.0,
-		asat_deficit_UP * 1000.0);
+		afrootn
+		);
 	/*------------------------------------------*/
 	/*printf("\n Basin %d Output %4d %3d %3d \n",*/ 
 	/*	basin[0].ID, date.year, date.month, date.day);*/
